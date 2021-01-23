@@ -10,15 +10,16 @@ import time
 import requests
 
 
-link = "https://www.codingame.com/clashofcode/clash/1557098648bb872c110388a856d193c75c8517c"
+#link = "https://www.codingame.com/clashofcode/clash/1558452d871d4d157e24ee47c16a7492db3258b"
+link = "https://www.codingame.com/ide/35478861c775e56b0e180f7aea83f25c2cc25a4b"
 
 
 #login is needed only the first time
-options = webdriver.ChromeOptions()
+# options = webdriver.ChromeOptions()
 
-# Here i am using brave's login credentials so that i don't have to login 
-options.add_argument('--user-data-dir=/home/none/.config/BraveSoftware/Brave-Browser/')
-driver = webdriver.Chrome(executable_path='chromedriver', options=options)
+# # Here i am using brave's login credentials so that i don't have to login 
+# options.add_argument('--user-data-dir=/home/none/.config/BraveSoftware/Brave-Browser/')
+driver = webdriver.Chrome(executable_path='chromedriver')
 
 driver.get(link)
 
@@ -26,8 +27,19 @@ driver.get(link)
 # Case open : testcase open
 # test Case content : testcase-content
 
-test_cases = driver.find_element_by_class_name("cg-ide-testcases-details-")
+time.sleep(10)
 
+
+#closing the welcome window
+driver.find_element_by_class_name("got-it-button").click()
+
+
+#title xpath
+# 
+
+test_cases = driver.find_elements_by_class_name("cg-ide-testcases-details-reverse")
+
+print(len(test_cases))
 for case in test_cases:
     co = case.find_element_by_class_name("testcase open")
     for content in co:
