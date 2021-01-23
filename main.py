@@ -1,20 +1,15 @@
-# LOL website is down
-
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait 
 from selenium.webdriver.chrome.options import Options
 import time
 
+#for waiting elements
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
-# For testing
-import requests
 
-
-#link = "https://www.codingame.com/clashofcode/clash/1558452d871d4d157e24ee47c16a7492db3258b"
-
-some_other_link = "https://www.google.com"
-link = "https://www.codingame.com/"
-
+link = "https://www.codingame.com/ide/35480382a7fdc82f7d3fc2f2ed3d10bc072db941"
 
 #login is needed only the first time
 options = webdriver.ChromeOptions()
@@ -22,54 +17,25 @@ options = webdriver.ChromeOptions()
 # # Here i am using brave's login credentials so that i don't have to login 
 options.add_argument('--user-data-dir=./User_Data')
 driver = webdriver.Chrome(executable_path='chromedriver', options=options)
+wait = WebDriverWait(driver, 5)
 
-
-#driver.get(some_other_link)
-time.sleep(3)
+# Opening the clash
 driver.get(link)
 
+# Closing the welcome window
+welcome_window = wait.until(EC.visibility_of_element_located((By.CLASS_NAME, 'got-it-button'))).click()
 
-# List of test cases in case of reverse mode:  cg-ide-testcases-details-reverse
-# Case open : testcase open
-# test Case content : testcase-content
+# Waiting some secs, could be replaced later
+time.sleep(3)
 
+#title xpath
+title = driver.find_element_by_xpath('//*[@id="scrollable-pane"]/div/ide-page/div/div[2]/div[4]/div[4]/div[1]/div[1]/h1/span[2]').text
 
+reverse_cc = driver.find_element_by_class_name('cg-ide-testcases-details-reverse')
+test_cases = len(reverse_cc.find_elements_by_xpath('./div'))
 
-
-# #closing the welcome window
-# driver.find_element_by_class_name("got-it-button").click()
-
-
-# #title xpath
-# # 
-
-# test_cases = driver.find_elements_by_class_name("cg-ide-testcases-details-reverse")
-
-# print(len(test_cases))
-# for case in test_cases:
-#     co = case.find_element_by_class_name("testcase open")
-#     for content in co:
-#         print(content.find_element_by_class_name("testcase-content"))
-
-# /html/body/div[8]/div[2]/div[1]/div/div/ide-page/div/div[2]/div[4]/div[4]/div[2]/div/div[2]/div[2]/div[2]/div[1]/div[2]/div[2]
-# /html/body/div[8]/div[2]/div[1]/div/div/ide-page/div/div[2]/div[4]/div[4]/div[2]/div/div[2]/div[2]/div[2]/div[1]/div[2]/div[1]
-
-# //*[@id="scrollable-pane"]/div/ide-page/div/div[2]/div[4]/div[4]/div[2]/div/div[2]/div[2]/div[2]/div[1]/div[2]/div[2]
-# //*[@id="scrollable-pane"]/div/ide-page/div/div[2]/div[4]/div[4]/div[2]/div/div[2]/div[2]/div[2]/div[2]/div[2]/div[2]
-
-# testcase-text testcase-in
-# testcase-text testcase-out
-
-
-# shortest mode question statement
-#//*[@id="scrollable-pane"]/div/ide-page/div/div[2]/div[4]/div[4]/div[2]/div/div[2]/cg-ide-statement/div/cg-statement/div/div/div[1]/span
-
-# stat blocks
-#statement-section statement-protocol
-#//*[@id="scrollable-pane"]/div/ide-page/div/div[2]/div[4]/div[4]/div[2]/div/div[2]/cg-ide-statement/div/cg-statement/div/div/div[2]
-
-#to show test cases
-# header-button showtestcases-button
-
-# testcases-details-container
-# cg-ide-testcases-details
+for i in range(1, test_cases):
+    input_test = driver.find_element_by_xpath(f'//*[@id="scrollable-pane"]/div/ide-page/div/div[2]/div[4]/div[4]/div[2]/div/div[2]/div/div[2]/div[{i}]/div[2]/div[2]/pre[1]').text
+    output_test = driver.find_element_by_xpath(f'//*[@id="scrollable-pane"]/div/ide-page/div/div[2]/div[4]/div[4]/div[2]/div/div[2]/div/div[2]/div[{i}]/div[2]/div[2]/pre[2]').text
+    print(input_test)
+    print(output_test)
