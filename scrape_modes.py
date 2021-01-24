@@ -9,10 +9,6 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 
-link = "https://www.codingame.com/clashofcode/clash/1558624b06c0d4c1acef4f8fa40bb4886d236ca"
-
-MODE = 'shortest'
-
 class Mode:
 
     def __init__(self, link):
@@ -22,6 +18,10 @@ class Mode:
 
         # login is needed only the first time
         self.options = webdriver.ChromeOptions()
+
+        # For running in the backgroung
+        self.options.add_argument('--headless')
+        self.options.add_argument("--disable-gpu")
 
         # Here i am using brave's login credentials so that i don't have to login 
         self.options.add_argument('--user-data-dir=./User_Data')
@@ -91,17 +91,18 @@ class Mode:
             self.get_test_cases()
         
         # else just else
-        if MODE == 'reverse':
+        if mode == 'reverse':
 
             reverse_cc = self.driver.find_element_by_class_name('cg-ide-testcases-details-reverse')
             test_cases = len(reverse_cc.find_elements_by_xpath('./div'))
 
-            for i in range(1, test_cases):
+            for i in range(1, test_cases + 1):
                 input_test = self.driver.find_element_by_xpath(f'//*[@id="scrollable-pane"]/div/ide-page/div/div[2]/div[4]/div[4]/div[2]/div/div[2]/div/div[2]/div[{i}]/div[2]/div[2]/pre[1]').text
                 output_test = self.driver.find_element_by_xpath(f'//*[@id="scrollable-pane"]/div/ide-page/div/div[2]/div[4]/div[4]/div[2]/div/div[2]/div/div[2]/div[{i}]/div[2]/div[2]/pre[2]').text
                 print(f"INPUT: {input_test}")
                 print("------------")
                 print(f"OUTPUT: {output_test}")
+                print("------------")
 
 
 
