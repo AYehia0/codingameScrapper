@@ -1,7 +1,17 @@
 from scrape_modes import Mode
 
+def save_to_file(content):
+    with open('problems.txt', 'w') as f:
+        for data in content:
+            f.write(f"{data}\n")
+        f.close()
 
-m = Mode("https://www.codingame.com/clashofcode/clash/1558692e93a416794605138a1e9846e9593a37b")
+
+link = input("Clash URL: ")
+
+m = Mode(link)
 m.bypass_welcome()
 m.which_mode()
-m.get_code()
+save_to_file(m.get_code())
+
+
