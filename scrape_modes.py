@@ -53,15 +53,17 @@ class Mode:
         test_cs_contatiner = self.driver.find_element_by_xpath('//*[@id="scrollable-pane"]/div/ide-page/div/div[2]/div[1]/div/div/div/div')
         test_counts = len(test_cs_contatiner.find_elements_by_xpath('./div'))
         
-        print("###TEST CASES###")
+        #print("###TEST CASES###")
         for i in range(1, test_counts+1):
 
             self.driver.find_element_by_xpath(f'//*[@id="scrollable-pane"]/div/ide-page/div/div[2]/div[1]/div/div/div/div/div[{i}]').click()
-            time.sleep(1)
+            time.sleep(1.5)
             case_info = self.driver.find_element_by_xpath(f'//*[@id="scrollable-pane"]/div/ide-page/div/div[2]/div[1]/div/div/div/div/div[{i}]/div[2]/div').text
             
             cases_info.append(case_info)
-        return case_info
+
+        
+        return cases_info
 
 
     def which_mode(self):
@@ -83,14 +85,18 @@ class Mode:
             qs_example_in = self.driver.find_element_by_class_name('question-statement-example-in').text
             qs_example_out = self.driver.find_element_by_class_name('question-statement-example-out').text
 
+            prob.append(f"------------")
             prob.append(f"PROBLEM:\n{problem_descreption}")
             prob.append(f"\n{qs_in}")
             prob.append(f"\n{qs_out}")
             prob.append(f"CONSTRAINS:\n{qs_constrains}")
             prob.append(f"EXAMPLE input:\n{qs_example_in}")
             prob.append(f"EXAMPLE output:\n{qs_example_out}")
-            
-            for case in self.get_test_cases():
+            prob.append(f"------------")
+
+            _cases = self.get_test_cases()
+            print(_cases)
+            for case in _cases:
                 prob.append(case)
         
         # else just else

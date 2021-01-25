@@ -1,7 +1,7 @@
 from scrape_modes import Mode
 
 def save_to_file(content):
-    with open('problems.txt', 'w') as f:
+    with open('problems.txt', 'a') as f:
         for data in content:
             f.write(f"{data}\n")
         f.close()
