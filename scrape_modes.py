@@ -20,8 +20,8 @@ class Mode:
         self.options = webdriver.ChromeOptions()
 
         # For running in the backgroung
-        self.options.add_argument('--headless')
-        self.options.add_argument("--disable-gpu")
+        # self.options.add_argument('--headless')
+        # self.options.add_argument("--disable-gpu")
 
         # Here i am using brave's login credentials so that i don't have to login 
         self.options.add_argument('--user-data-dir=./User_Data')
@@ -44,6 +44,7 @@ class Mode:
 
 
     def get_test_cases(self):
+        cases_info = []
         #clicking the expert mode 
         self.driver.find_element_by_xpath('//*[@id="scrollable-pane"]/div/ide-page/div/div[2]/div[4]/div[4]/div[2]/div/div[5]/div[1]/div[1]/div[3]/button').click()
         
@@ -59,8 +60,8 @@ class Mode:
             time.sleep(1)
             case_info = self.driver.find_element_by_xpath(f'//*[@id="scrollable-pane"]/div/ide-page/div/div[2]/div[1]/div/div/div/div/div[{i}]/div[2]/div').text
             
-            print(case_info)
-            print("------------")
+            cases_info.append(case_info)
+        return case_info
 
 
     def which_mode(self):
@@ -70,7 +71,7 @@ class Mode:
 
 
     def get_code(self):
-
+        prob = []
         mode = self.which_mode()
         # Fastest and Shortest modes only have problem description
         if mode == 'fastest' or mode == 'shortest':
@@ -82,13 +83,15 @@ class Mode:
             qs_example_in = self.driver.find_element_by_class_name('question-statement-example-in').text
             qs_example_out = self.driver.find_element_by_class_name('question-statement-example-out').text
 
-            print(f"PROBLEM: {problem_descreption}")
-            print(qs_in)
-            print(qs_out)
-            print(f"CONSTRAINS: {qs_constrains}")
-            print(f"EXAMPLE input: {qs_example_in}")
-            print(f"EXAMPLE output: {qs_example_out}")
-            self.get_test_cases()
+            prob.append(f"PROBLEM:\n{problem_descreption}")
+            prob.append(f"\n{qs_in}")
+            prob.append(f"\n{qs_out}")
+            prob.append(f"CONSTRAINS:\n{qs_constrains}")
+            prob.append(f"EXAMPLE input:\n{qs_example_in}")
+            prob.append(f"EXAMPLE output:\n{qs_example_out}")
+            
+            for case in self.get_test_cases():
+                prob.append(case)
         
         # else just else
         if mode == 'reverse':
@@ -99,11 +102,11 @@ class Mode:
             for i in range(1, test_cases + 1):
                 input_test = self.driver.find_element_by_xpath(f'//*[@id="scrollable-pane"]/div/ide-page/div/div[2]/div[4]/div[4]/div[2]/div/div[2]/div/div[2]/div[{i}]/div[2]/div[2]/pre[1]').text
                 output_test = self.driver.find_element_by_xpath(f'//*[@id="scrollable-pane"]/div/ide-page/div/div[2]/div[4]/div[4]/div[2]/div/div[2]/div/div[2]/div[{i}]/div[2]/div[2]/pre[2]').text
-                print(f"INPUT: {input_test}")
-                print("------------")
-                print(f"OUTPUT: {output_test}")
-                print("------------")
-
+                prob.append(f"INPUT:\n{input_test}")
+                prob.append("------------")
+                prob.append(f"OUTPUT:\n{output_test}")
+                prob.append("------------")
+        return prob
 
 
 
