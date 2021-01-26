@@ -7,6 +7,8 @@ def save_to_file(content):
         f.close()
 
 
+
+home_page = 'https://www.codingame.com/training'
 link = input("Clash URL: ")
 
 m = Mode(link)
