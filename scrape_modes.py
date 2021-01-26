@@ -20,11 +20,11 @@ class Mode:
         self.options = webdriver.ChromeOptions()
 
         # For running in the backgroung
-        # self.options.add_argument('--headless')
-        # self.options.add_argument("--disable-gpu")
+        self.options.add_argument('--headless')
+        self.options.add_argument("--disable-gpu")
 
         # Here i am using brave's login credentials so that i don't have to login 
-        self.options.add_argument('--user-data-dir=./User_Data')
+        self.options.add_argument('--user-data-dir=/home/none/.config/chromium/')
         self.driver = webdriver.Chrome(executable_path='chromedriver', options=self.options)
         self.timeout = 12
         self.wait = WebDriverWait(self.driver, self.timeout)
@@ -112,9 +112,10 @@ class Mode:
                 prob.append("------------")
                 prob.append(f"OUTPUT:\n{output_test}")
                 prob.append("------------")
+
+        # Closing the driver 
+        self.driver.close()
+
         return prob
 
-
-
-    
 
