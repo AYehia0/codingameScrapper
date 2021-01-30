@@ -95,7 +95,7 @@ class Mode:
             prob.append(f"------------")
 
             _cases = self.get_test_cases()
-            print(_cases)
+            #print(_cases)
             for case in _cases:
                 prob.append(case)
         
