@@ -26,7 +26,7 @@ class Mode:
         # Here i am using brave's login credentials so that i don't have to login 
         self.options.add_argument('--user-data-dir=/home/none/.config/chromium/')
         self.driver = webdriver.Chrome(executable_path='chromedriver', options=self.options)
-        self.timeout = 12
+        self.timeout = 60
         self.wait = WebDriverWait(self.driver, self.timeout)
         
 
